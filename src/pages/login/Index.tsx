@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { loginAdministrador } from "../../api/admin";
 import { LoginAdministrador } from "../../types/adminType";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
+
     const [credenciais, setCredenciais] = useState<LoginAdministrador>({
         login: '',
         senha: ''
@@ -13,11 +16,11 @@ function Login() {
         try {
             const resposta = await loginAdministrador(credenciais);
 
-            if(resposta.status === 200) alert("credenciais corretas");
+            if (resposta.status === 200) navigate('/admin');
         } catch (e: any) {
             const error = e as AxiosError
 
-            if(error.status === 400) alert("credencias invalidas");
+            if (error.status === 400) alert("credencias invalidas");
         }
     }
 
