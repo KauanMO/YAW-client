@@ -3,6 +3,7 @@ import { loginAdministrador } from "../../api/admin";
 import { LoginAdministrador } from "../../types/adminType";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { loginAdminMock } from "../../types/mock";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,9 +19,16 @@ function Login() {
 
             if (resposta.status === 200) navigate('/admin');
         } catch (e: any) {
-            const error = e as AxiosError
+            if (process.env.REACT_APP_AMBIENTE == 'dev'
+                && credenciais.login === loginAdminMock.login
+                && credenciais.senha === loginAdminMock.senha
+            ) navigate('/admin');
 
-            if (error.status === 400) alert("credencias invalidas");
+            else {
+                const error = e as AxiosError
+
+                if (error.status === 400) alert("credencias invalidas");
+            }
         }
     }
 

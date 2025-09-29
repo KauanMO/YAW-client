@@ -3,5 +3,5 @@ export type Pedido = {
     link: string,
     foto: string,
     titulo: string,
-    preco: string
+    preco: number
 }
