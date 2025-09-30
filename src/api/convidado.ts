@@ -1,11 +1,14 @@
+import { RegistroConvidado } from "../types/convidadoType";
 import api from "./builder";
 
-const buscarConvidados = async () => {
+export const buscarConvidados = async () => {
     const resposta = await api.get('/convidados');
 
     return resposta;
 }
 
-export {
-    buscarConvidados
+export const cadastrarConvidado = async (infoNovoConvidado: RegistroConvidado) => {
+    const resposta = await api.post('/convidados', infoNovoConvidado);
+
+    return resposta;
 }

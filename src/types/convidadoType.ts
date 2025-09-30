@@ -3,3 +3,8 @@ export type Convidado = {
     nome: string,
     numero: string
 }
+
+export type RegistroConvidado = {
+    nome: string,
+    numero: string
+}

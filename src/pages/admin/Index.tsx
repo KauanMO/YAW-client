@@ -1,14 +1,91 @@
 import React, { useEffect, useState } from "react";
 import { Pedido } from "../../types/pedidoType";
 import { buscarPedidos } from "../../api/pedido";
-import { buscarConvidados } from "../../api/convidado";
-import { Convidado } from "../../types/convidadoType";
+import { buscarConvidados, cadastrarConvidado } from "../../api/convidado";
+import { Convidado, RegistroConvidado } from "../../types/convidadoType";
 import { convidadosMock, pedidosMock } from "../../types/mock";
+import { BotaoRegistro, BotaoSubmit } from "../../components/button/Button";
+import styled from "styled-components";
+import { ModalRegistro } from "../../components/modal/Modal";
 
-function Admin() {
+enum OpcaoModal {
+    RegistrarPedidos,
+    RegistrarConvidados
+}
+
+// STYLED-COMPONENTS
+const TituloLista = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+const FormularioRegistro = styled.form`
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 1rem;
+`;
+
+export default function Admin() {
+    // MODAIS
+    const ModalRegistroPedidosAberto: React.FC = () => {
+        return <ModalRegistro onClose={fecharModais} isOpen={modaisAbertos.get(OpcaoModal.RegistrarPedidos)}>
+            <h1>Registrar pedido</h1>
+        </ModalRegistro>
+    }
+
+    const ModalRegistroConvidadosAberto: React.FC = () => {
+        const [infoNovoConvidado, setInfoNovoConvidado] = useState<RegistroConvidado>({
+            nome: '',
+            numero: ''
+        });
+
+        const alterarInfoNovoConvidado = (info: string, valor: string) =>
+            setInfoNovoConvidado({
+                ...infoNovoConvidado,
+                [info]: valor
+            });
+
+        const cadastrarConvidadoRequest = async () => {
+            try {
+                const resposta = await cadastrarConvidado(infoNovoConvidado);
+
+                setConvidados(prev => [...prev, resposta.data]);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        return <ModalRegistro onClose={fecharModais} isOpen={modaisAbertos.get(OpcaoModal.RegistrarConvidados)}>
+            <h1>Registrar convidado</h1>
+
+            <FormularioRegistro onSubmit={e => {
+                e.preventDefault();
+                cadastrarConvidadoRequest()
+            }}>
+                <input onInput={valor => alterarInfoNovoConvidado('nome', valor.currentTarget.value)}
+                    value={infoNovoConvidado.nome}
+                    placeholder="nome" />
+
+                <input onInput={valor => alterarInfoNovoConvidado('numero', valor.currentTarget.value)}
+                    value={infoNovoConvidado.numero}
+                    placeholder="numero" />
+                <BotaoSubmit>Enviar</BotaoSubmit>
+            </FormularioRegistro>
+        </ModalRegistro>
+    }
+
+    // STATES
     const [pedidos, setPedidos] = useState<Pedido[]>();
-    const [convidados, setConvidados] = useState<Convidado[]>();
+    const [convidados, setConvidados] = useState<Convidado[]>([]);
+    const [modaisAbertos, setModaisAbertos] = useState<Map<OpcaoModal, boolean>>(
+        new Map<OpcaoModal, boolean>([
+            [OpcaoModal.RegistrarPedidos, false],
+            [OpcaoModal.RegistrarConvidados, false]
+        ])
+    );
 
+    // EFFECT
     useEffect(() => {
         const buscarPedidosRequest = async () => {
             try {
@@ -44,10 +121,29 @@ function Admin() {
         buscarConvidadosRequest();
     }, []);
 
+    // FUNCOES
+    const abrirModal = (modal: OpcaoModal) =>
+        setModaisAbertos(prev => new Map(prev).set(modal, true));
+
+    const fecharModais = () =>
+        setModaisAbertos(new Map<OpcaoModal, boolean>([
+            [OpcaoModal.RegistrarPedidos, false],
+            [OpcaoModal.RegistrarConvidados, false]
+        ]));
+
+    // RETURN
     return <>
+        <ModalRegistroPedidosAberto />
+        <ModalRegistroConvidadosAberto />
+
         <h1>Admin</h1>
 
-        <h3>Pedidos</h3>
+        <TituloLista>
+            <h3>Pedidos</h3>
+
+            <BotaoRegistro onClick={() => abrirModal(OpcaoModal.RegistrarPedidos)} />
+        </TituloLista>
+
         <ul>
             {
                 pedidos && pedidos.map(pedido => {
@@ -58,7 +154,11 @@ function Admin() {
             }
         </ul>
 
-        <h3>Convidados</h3>
+        <TituloLista>
+            <h3>Convidados</h3>
+
+            <BotaoRegistro onClick={() => abrirModal(OpcaoModal.RegistrarConvidados)} />
+        </TituloLista>
         <ul>
             {
                 convidados && convidados.map(convidado => {
@@ -70,5 +170,3 @@ function Admin() {
         </ul>
     </>
 }
-
-export default Admin;
