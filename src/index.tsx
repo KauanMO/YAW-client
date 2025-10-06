@@ -4,6 +4,7 @@ import Login from './pages/login/Index';
 import './GlobalStyle.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Admin from './pages/admin/Index';
+import Pedidos from './pages/pedidos/Index';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,11 +13,15 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    element: <Pedidos />,
   },
   {
     path: '/admin',
     element: <Admin />
+  },
+  {
+    path: '/login',
+    element: <Login />
   }
 ])
 
