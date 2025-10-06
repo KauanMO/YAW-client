@@ -8,6 +8,7 @@ const BotaoReservarPedidoContainer = styled.div`
     border-radius: 50%;
     color: white;
     position: relative;
+    cursor: pointer;
 `;
 
 const DropdownOpcoesReserva = styled.div`
