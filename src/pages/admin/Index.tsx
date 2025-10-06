@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Pedido } from "../../types/pedidoType";
-import { buscarPedidos } from "../../api/pedido";
+import { Pedido, RegistroPedido } from "../../types/pedidoType";
+import { buscarPedidos, cadastrarPedido } from "../../api/pedido";
 import { buscarConvidados, cadastrarConvidado } from "../../api/convidado";
 import { Convidado, RegistroConvidado } from "../../types/convidadoType";
 import { convidadosMock, pedidosMock } from "../../types/mock";
@@ -29,8 +29,54 @@ const FormularioRegistro = styled.form`
 export default function Admin() {
     // MODAIS
     const ModalRegistroPedidosAberto: React.FC = () => {
+        const [infoNovoPedido, setInfoNovoPedido] = useState<RegistroPedido>({
+            foto: '',
+            link: '',
+            preco: 0,
+            titulo: ''
+        });
+
+        const alterarInfoNovoPedido = (info: string, valor: string) =>
+            setInfoNovoPedido({
+                ...infoNovoPedido,
+                [info]: valor
+            });
+
+        const cadastrarPedidoRequest = async () => {
+            try {
+                const resposta = await cadastrarPedido(infoNovoPedido);
+
+                setPedidos(prev => [...prev, resposta.data]);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
         return <ModalRegistro onClose={fecharModais} isOpen={modaisAbertos.get(OpcaoModal.RegistrarPedidos)}>
             <h1>Registrar pedido</h1>
+
+            <FormularioRegistro onSubmit={e => {
+                e.preventDefault();
+                cadastrarPedidoRequest();
+            }}>
+                <input onInput={valor => alterarInfoNovoPedido('titulo', valor.currentTarget.value)}
+                    value={infoNovoPedido.titulo}
+                    placeholder="título" />
+
+                <input onInput={valor => alterarInfoNovoPedido('link', valor.currentTarget.value)}
+                    value={infoNovoPedido.link}
+                    placeholder="link" />
+
+                <input onInput={valor => alterarInfoNovoPedido('foto', valor.currentTarget.value)}
+                    value={infoNovoPedido.foto}
+                    placeholder="foto" />
+
+                <input onInput={valor => alterarInfoNovoPedido('preco', valor.currentTarget.value)}
+                    value={infoNovoPedido.preco}
+                    placeholder="preço" />
+
+                <BotaoSubmit>Enviar</BotaoSubmit>
+            </FormularioRegistro>
         </ModalRegistro>
     }
 
@@ -61,7 +107,7 @@ export default function Admin() {
 
             <FormularioRegistro onSubmit={e => {
                 e.preventDefault();
-                cadastrarConvidadoRequest()
+                cadastrarConvidadoRequest();
             }}>
                 <input onInput={valor => alterarInfoNovoConvidado('nome', valor.currentTarget.value)}
                     value={infoNovoConvidado.nome}
@@ -76,7 +122,7 @@ export default function Admin() {
     }
 
     // STATES
-    const [pedidos, setPedidos] = useState<Pedido[]>();
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
     const [convidados, setConvidados] = useState<Convidado[]>([]);
     const [modaisAbertos, setModaisAbertos] = useState<Map<OpcaoModal, boolean>>(
         new Map<OpcaoModal, boolean>([

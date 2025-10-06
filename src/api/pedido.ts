@@ -1,3 +1,4 @@
+import { RegistroPedido } from "../types/pedidoType";
 import api from "./builder";
 
 const buscarPedidos = async () => {
@@ -6,6 +7,13 @@ const buscarPedidos = async () => {
     return resposta;
 }
 
+const cadastrarPedido = async (pedido: RegistroPedido) => {
+    const resposta = await api.post('/pedidos', pedido);
+
+    return resposta;
+}
+
 export {
-    buscarPedidos
+    buscarPedidos,
+    cadastrarPedido
 }
