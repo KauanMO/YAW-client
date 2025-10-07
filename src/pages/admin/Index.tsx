@@ -33,7 +33,8 @@ export default function Admin() {
             foto: '',
             link: '',
             preco: 0,
-            titulo: ''
+            titulo: '',
+            descricao: ''
         });
 
         const alterarInfoNovoPedido = (info: string, valor: string) =>

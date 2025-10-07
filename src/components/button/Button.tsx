@@ -8,7 +8,7 @@ type Props = {
 }
 
 const ContainerBotaoRegistro = styled.div`
-        background-color: ${colors.blue};
+        background-color: ${colors.azul};
         padding: .3rem;
         border-radius: 50%;
         width: .9rem;

@@ -2,7 +2,7 @@ import React from "react";
 import { Pedido } from "../../types/pedidoType";
 import styled from "styled-components";
 import { formatarBRL } from "../../utils/Funcoes";
-import BotaoReservarPedido from "../botarReservarPedido/BotaoReservarPedido";
+import { colors } from "../../utils/Constants";
 
 type Props = {
     pedido: Pedido
@@ -11,12 +11,13 @@ type Props = {
 const CardPedidoContainer = styled.div`
     display: flex;
     align-items: center;
-    gap: 1rem;
-    width: 80%;
-    box-shadow: 7px 5px 5px -4px #000000;
+    justify-self: center;
+    width: 85%;
     padding: 1rem;
-    border: 1px solid black;
-    justify-content: space-around;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    gap: 1rem;
 `;
 
 const FotoPedido = styled.img`
@@ -27,38 +28,60 @@ const FotoPedido = styled.img`
 const InformacoesPedido = styled.div`
     display: flex;
     flex-direction: column;
+    gap: .6rem;
 `;
 
-const TituloPedido = styled.span`
+const TituloPedido = styled.a`
+    color: black;
 `;
 
 const PrecoPedido = styled.span`
+    color: ${colors.verde};
 `;
 
-const LogoLoja = styled.img`
-    width: 50px;
-    height: 50px;
+const DescricaoPedido = styled.span`
+    font-size: .8rem;
+`;
+
+const BotoesReservarPedidoContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const SelectOpcaoReserva = styled.select`
+    padding: .6rem;
+    font-size: .8rem;
+    border-radius: .4rem;
+`;
+
+const BotaoReservar = styled.div`
+    display: flex;
+    align-items: center;
+    border-radius: .8rem;
+    padding: .4rem .7rem;
+    background-color: #453e65;
+    color: white;
+    font-size: .8rem;
 `;
 
 export default function CardPedido({ pedido }: Props) {
-    const logosLojas: Record<string, string> = {
-        "amazon": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
-    }
-
-    const lojaEncontrada: string | undefined = Object.keys(logosLojas).find(loja => pedido.link.toLowerCase().includes(loja))
-
-    const logoSrc = lojaEncontrada ? logosLojas[lojaEncontrada] : '';
-
     return <CardPedidoContainer>
         <FotoPedido src={pedido.foto} />
 
         <InformacoesPedido>
-            <TituloPedido>{pedido.titulo}</TituloPedido>
+            <TituloPedido target="_blank" href={pedido.link}>{pedido.titulo}</TituloPedido>
+            <DescricaoPedido>{pedido.descricao}</DescricaoPedido>
             <PrecoPedido>{formatarBRL(pedido.preco)}</PrecoPedido>
+
+            <BotoesReservarPedidoContainer>
+                <SelectOpcaoReserva>
+                    <option value="default">Selecione uma opção</option>
+                    <option value="PIX">Vou enviar um PIX</option>
+                    <option value="Levar">Vou levar na festa</option>
+                    <option value="Entrega">Vou mandar entregar</option>
+                </SelectOpcaoReserva>
+                <BotaoReservar>Reservar</BotaoReservar>
+            </BotoesReservarPedidoContainer>
         </InformacoesPedido>
-
-        <LogoLoja src={logoSrc} />
-
-        <BotaoReservarPedido />
     </CardPedidoContainer>
 }

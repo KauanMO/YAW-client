@@ -3,12 +3,14 @@ export type Pedido = {
     link: string,
     foto: string,
     titulo: string,
-    preco: number
+    preco: number,
+    descricao: string
 }
 
 export type RegistroPedido = {
     link: string,
     foto: string,
     titulo: string,
-    preco: number
+    preco: number,
+    descricao: string
 }

@@ -5,6 +5,13 @@ import { pedidosMock } from "../../types/mock";
 import CardPedido from "../../components/cardPedido/CardPedido";
 import styled from "styled-components";
 
+const ListaPedidosContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    justify-self: center;
+`;
+
 export default function Pedidos() {
     const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
@@ -21,15 +28,7 @@ export default function Pedidos() {
 
         buscarPedidosRequest();
     }, []);
-
-    const ListaPedidosContainer = styled.div`
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100dvw;
-        gap: 1rem;
-    `;
-
+    
     return <>
         <h1>Pedidos</h1>
 
