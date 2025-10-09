@@ -2,7 +2,7 @@ import React from "react";
 import { Pedido } from "../../types/pedidoType";
 import styled from "styled-components";
 import { formatarBRL } from "../../utils/Funcoes";
-import { colors } from "../../utils/Constants";
+import { styles } from "../../utils/Constants";
 
 type Props = {
     pedido: Pedido
@@ -16,7 +16,7 @@ const CardPedidoContainer = styled.div`
     padding: 1rem;
     justify-content: space-between;
     border: 1px solid #ccc;
-    border-radius: 1rem;
+    border-radius: ${styles.borderRadius};
     gap: 1rem;
 `;
 
@@ -36,7 +36,7 @@ const TituloPedido = styled.a`
 `;
 
 const PrecoPedido = styled.span`
-    color: ${colors.verde};
+    color: ${styles.verde};
 `;
 
 const DescricaoPedido = styled.span`
@@ -51,13 +51,18 @@ const BotoesReservarPedidoContainer = styled.div`
 const SelectOpcaoReserva = styled.select`
     padding: .6rem;
     font-size: .8rem;
-    border-radius: .4rem;
+    border-radius: ${styles.borderRadius};
+    background-color: white;
+
+    &:focus {
+        background-color: #e4e4e4;
+    }
 `;
 
 const BotaoReservar = styled.div`
     display: flex;
     align-items: center;
-    border-radius: .8rem;
+    border-radius: ${styles.borderRadius};
     padding: .4rem .7rem;
     background-color: #453e65;
     color: white;

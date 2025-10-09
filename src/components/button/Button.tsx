@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { colors } from "../../utils/Constants";
+import { styles } from "../../utils/Constants";
 
 type Props = {
     onClick?: Function,
@@ -8,7 +8,7 @@ type Props = {
 }
 
 const ContainerBotaoRegistro = styled.div`
-        background-color: ${colors.azul};
+        background-color: ${styles.azul};
         padding: .3rem;
         border-radius: 50%;
         width: .9rem;
