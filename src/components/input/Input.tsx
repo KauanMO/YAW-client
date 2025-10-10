@@ -1,11 +1,12 @@
-import React from "react";
+import React, { HTMLInputTypeAttribute } from "react";
 import styled from "styled-components";
 import { styles } from "../../utils/Constants";
 
 type Props = {
     placeholder: string,
     label: string,
-    onInput: (e: React.FormEvent<HTMLInputElement>) => void
+    onInput: (e: React.FormEvent<HTMLInputElement>) => void,
+    type?: HTMLInputTypeAttribute
 }
 
 const InputContainer = styled.div`
@@ -25,15 +26,27 @@ const InputTexto = styled.input`
     box-sizing: border-box;
 `;
 
-const Texto: React.FC<Props> = ({ placeholder, label, onInput }) => {
+const Texto: React.FC<Props> = ({ placeholder, label, onInput, type }) => {
     return <InputContainer>
         <InputLabel>{label}</InputLabel>
         <InputTexto onInput={e => onInput(e)}
             id={label}
-            placeholder={placeholder} />
+            placeholder={placeholder}
+            type={type}
+        />
     </InputContainer>
 }
 
+const Senha: React.FC<Props> = ({ placeholder, label, onInput }) => {
+    return <Texto
+        placeholder={placeholder}
+        label={label}
+        onInput={e => onInput(e)}
+        type="password"
+    />
+}
+
 export default {
-    Texto
+    Texto,
+    Senha
 }

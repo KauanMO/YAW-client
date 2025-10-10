@@ -4,5 +4,7 @@ export const styles = {
     azul_3E: '#2C273E',
     borderRadius: '.4rem',
     verde_83: '#68836F',
-    azul_7E: '#726E7E'
+    azul_7E: '#726E7E',
+    roxo_81: '#585081',
+    roxo_65: '#565265'
 }
